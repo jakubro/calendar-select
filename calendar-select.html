@@ -19,12 +19,17 @@ Simply add the `<calendar-select>` element to the page, and you're off!
     :host {
       display: block;
       box-sizing: border-box;
+      text-align: center;
+    }
+
+    .calendar-select__calendar {
+      width: 100%;
     }
   </style>
 
   <template>
     <h1>[[_monthName(_currentMonth)]]</h1>
-    <table>
+    <table class="calendar-select__calendar">
       <thead>
         <tr>
           <template is="dom-repeat" items="[[_dayNames()]]">
