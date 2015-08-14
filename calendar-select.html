@@ -25,6 +25,13 @@ Simply add the `<calendar-select>` element to the page, and you're off!
   <template>
     <h1>[[_monthName(_currentMonth)]]</h1>
     <table>
+      <thead>
+        <tr>
+          <template is="dom-repeat" items="[[_dayNames()]]">
+            <th>[[item]]</th>
+          </template>
+        </tr>
+      </thead>
       <tbody>
         <template is="dom-repeat" items="[[_generateWeeks(_currentMonth)]]">
           <tr>
@@ -92,6 +99,10 @@ Simply add the `<calendar-select>` element to the page, and you're off!
       // removed from a document.
       //
       // Use this to clean up anything you did in `attached`.
+    },
+
+    _dayNames: function() {
+      return moment.weekdaysShort();
     },
 
     _parseDate: function(date) {
