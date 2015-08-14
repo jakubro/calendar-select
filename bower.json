@@ -4,13 +4,14 @@
   "authors": [
     "Aaron Panchal <aaron.panchal@gmail.com>"
   ],
-  "description": "An element providing a solution to no problem in particular.",
+  "description": "A reusable calendar selector built with Polymer!",
   "keywords": [
     "web-component",
     "web-components",
     "polymer",
     "calendar",
-    "datepicker"
+    "datepicker",
+    "calendar-select"
   ],
   "main": "calendar-select.html",
   "license": "http://polymer.github.io/LICENSE.txt",
