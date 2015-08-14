@@ -14,7 +14,7 @@
     "calendar-select"
   ],
   "main": "calendar-select.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
+  "license": "MIT",
   "homepage": "https://github.com/aaronpanch/calendar-select/",
   "ignore": [
     "/.*",
