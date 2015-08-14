@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- You can use the document as a place to set up your fixtures. -->
     <calendar-select id="default"></calendar-select>
-    <calendar-select id="selected_date" selected-date="2015-8-2"></calendar-select>
+    <calendar-select id="selected_date" selected-date="12-25-2015"></calendar-select>
 
     <script>
       var defaultCalendar = document.querySelector('#default');
@@ -39,9 +39,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
 
         test('the "selected-date" property reads from attribute', function () {
-          assert.equal(selectedDateCalendar.selectedDate.getDate(), 2);
-          assert.equal(selectedDateCalendar.selectedDate.getMonth() + 1, 8);
+          assert.equal(selectedDateCalendar.selectedDate.getDate(), 25);
+          assert.equal(selectedDateCalendar.selectedDate.getMonth() + 1, 12);
           assert.equal(selectedDateCalendar.selectedDate.getFullYear(), 2015);
+        });
+
+        test('_currentMonth initializes using selected date', function () {
+          assert.equal(defaultCalendar._currentMonth.date(), 1);
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month());
+          assert.equal(defaultCalendar._currentMonth.year(), moment().year());
+
+          assert.equal(selectedDateCalendar._currentMonth.date(), 1);
+          assert.equal(selectedDateCalendar._currentMonth.month() + 1, 12);
+          assert.equal(selectedDateCalendar._currentMonth.year(), 2015);
         });
 
       });
