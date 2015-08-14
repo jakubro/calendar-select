@@ -22,31 +22,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body>
 
     <!-- You can use the document as a place to set up your fixtures. -->
-    <calendar-select></calendar-select>
+    <calendar-select id="default"></calendar-select>
+    <calendar-select id="selected_date" selected-date="2015-8-2"></calendar-select>
 
     <script>
-      var myEl = document.querySelector('calendar-select');
+      var defaultCalendar = document.querySelector('#default');
+      var selectedDateCalendar = document.querySelector('#selected_date');
 
       suite('<calendar-select>', function() {
 
-        test('defines the "author" property', function() {
-          assert.equal(myEl.author.name, 'Dimitri Glazkov');
-          assert.equal(myEl.author.image, 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg');
+        test('defines the "selected-date" property with today as default', function() {
+          var today = new Date();
+          assert.equal(defaultCalendar.selectedDate.getDate(), today.getDate());
+          assert.equal(defaultCalendar.selectedDate.getMonth(), today.getMonth());
+          assert.equal(defaultCalendar.selectedDate.getFullYear(), today.getFullYear());
         });
 
-        test('says hello', function() {
-          assert.equal(myEl.sayHello(), 'calendar-select says, Hello World!');
-
-          var greetings = myEl.sayHello('greetings Earthlings');
-          assert.equal(greetings, 'calendar-select says, greetings Earthlings');
-        });
-
-        test('fires lasers', function(done) {
-          myEl.addEventListener('calendar-select-lasers', function(event) {
-            assert.equal(event.detail.sound, 'Pew pew!');
-            done();
-          });
-          myEl.fireLasers();
+        test('the "selected-date" property reads from attribute', function () {
+          assert.equal(selectedDateCalendar.selectedDate.getDate(), 2);
+          assert.equal(selectedDateCalendar.selectedDate.getMonth() + 1, 8);
+          assert.equal(selectedDateCalendar.selectedDate.getFullYear(), 2015);
         });
 
       });

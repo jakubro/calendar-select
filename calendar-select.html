@@ -10,9 +10,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-An element providing a solution to no problem in particular.
+A sweet calendar selector widget!
 
-Example:
+# Default Usage
+
+Simply add the `<calendar-select>` element to the page, and you're off!
 
     <calendar-select></calendar-select>
 
@@ -25,16 +27,10 @@ Example:
       display: block;
       box-sizing: border-box;
     }
-
-    .author img {
-      float: left;
-      margin-right: 5px;
-      max-height: 100px;
-      max-width: 100px;
-    }
   </style>
 
   <template>
+    The date is <span>{{selectedDate}}</span>
   </template>
 
 </dom-module>
@@ -46,38 +42,17 @@ Example:
     is: 'calendar-select',
 
     properties: {
-
       /**
-       * `fancy` indicates that the element should don a monocle and tophat,
-       * while checking its pocket watch.
-       */
-      fancy: Boolean,
-
-      /**
-       * Describes the author of the element, but is really just an excuse to
-       * show off JSDoc annotations.
+       * Specify the initial selected date for the calendar. Can be specified as a string.
        *
-       * @type {{name: string, image: string}}
+       * @default Today
        */
-      author: {
-        type: Object,
-        // Use `value` to provides a default value for a property, by setting it
-        // on your element's prototype.
-        //
-        // If you provide a function, as we do here, Polymer will call that
-        // _per element instance_.
-        //
-        // We do that to ensure that each element gets its own copy of the
-        // value, rather than having it shared across all instances (via the
-        // prototype).
+      selectedDate: {
+        type: Date,
         value: function() {
-          return {
-            name:  'Dimitri Glazkov',
-            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-          };
+          return new Date();
         }
-      },
-
+      }
     },
 
     // Element Lifecycle
@@ -105,38 +80,7 @@ Example:
       // removed from a document.
       //
       // Use this to clean up anything you did in `attached`.
-    },
-
-    // Element Behavior
-
-    /**
-     * The `calendar-select-lasers` event is fired whenever `fireLasers` is called.
-     *
-     * @event calendar-select-lasers
-     * @detail {{sound: String}}
-     */
-
-    /**
-     * Sometimes it's just nice to say hi.
-     *
-     * @param {string} greeting A positive greeting.
-     * @return {string} The full greeting.
-     */
-    sayHello: function(greeting) {
-      var response = greeting || 'Hello World!';
-      return 'calendar-select says, ' + response;
-    },
-
-    /**
-     * Attempts to destroy this element's enemies with an any beam of light!
-     *
-     * Or, at least, dispatches an event in the vain hope that someone else will
-     * do the zapping.
-     */
-    fireLasers: function() {
-      this.fire('calendar-select-lasers', {sound: 'Pew pew!'});
     }
-
   });
 
 </script>
