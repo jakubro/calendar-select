@@ -23,7 +23,18 @@ Simply add the `<calendar-select>` element to the page, and you're off!
   </style>
 
   <template>
-    <h1>{{_monthName(_selectedMoment)}}</h1>
+    <h1>[[_monthName(_currentMonth)]]</h1>
+    <table>
+      <tbody>
+        <template is="dom-repeat" items="[[_generateWeeks(_currentMonth)]]">
+          <tr>
+            <template is="dom-repeat" items="[[item]]">
+              <td>[[item.date]]</td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
   </template>
 
 </dom-module>
@@ -47,9 +58,12 @@ Simply add the `<calendar-select>` element to the page, and you're off!
         }
       },
 
-      _selectedMoment: {
+      _currentMonth: {
         type: Object,
-        computed: '_parseDate(selectedDate)'
+        readOnly: true,
+        value: function() {
+          return moment(this.selectedDate).startOf('month');
+        }
       }
     },
 
@@ -86,6 +100,19 @@ Simply add the `<calendar-select>` element to the page, and you're off!
 
     _monthName: function(selectedMoment) {
       return selectedMoment.format('MMMM');
+    },
+
+    _generateWeeks: function(currentMonth) {
+      var cursor = currentMonth.clone().startOf('week').subtract(1, 'day'),
+          today = moment();
+      return Array.apply(null, new Array(6)).map(function () {
+        return Array.apply(null, new Array(7)).map(function () {
+          var currentMoment = cursor.add(1, 'day');
+          return {
+            date: currentMoment.date()
+          }
+        });
+      });
     }
   });
 
