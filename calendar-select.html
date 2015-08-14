@@ -71,17 +71,14 @@ Simply add the `<calendar-select>` element to the page, and you're off!
       },
 
       _currentMonth: {
-        type: Object,
-        readOnly: true,
-        value: function() {
-          return moment(this.selectedDate).startOf('month');
-        }
+        type: Object
       }
     },
 
     // Element Lifecycle
 
     ready: function() {
+      this._currentMonth = moment(this.selectedDate).startOf('month');
       // `ready` is called after all elements have been configured, but
       // propagates bottom-up. This element's children are ready, but parents
       // are not.
