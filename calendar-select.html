@@ -1,13 +1,6 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <link rel="import" href="../polymer/polymer.html">
+
+<script src="bower_components/moment/min/moment.min.js"></script>
 
 <!--
 A sweet calendar selector widget!
@@ -30,7 +23,7 @@ Simply add the `<calendar-select>` element to the page, and you're off!
   </style>
 
   <template>
-    The date is <span>{{selectedDate}}</span>
+    <h1>{{_monthName(_selectedMoment)}}</h1>
   </template>
 
 </dom-module>
@@ -52,6 +45,11 @@ Simply add the `<calendar-select>` element to the page, and you're off!
         value: function() {
           return new Date();
         }
+      },
+
+      _selectedMoment: {
+        type: Object,
+        computed: '_parseDate(selectedDate)'
       }
     },
 
@@ -80,6 +78,14 @@ Simply add the `<calendar-select>` element to the page, and you're off!
       // removed from a document.
       //
       // Use this to clean up anything you did in `attached`.
+    },
+
+    _parseDate: function(date) {
+      return moment(date);
+    },
+
+    _monthName: function(selectedMoment) {
+      return selectedMoment.format('MMMM');
     }
   });
 
