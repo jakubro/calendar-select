@@ -54,6 +54,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.equal(selectedDateCalendar._currentMonth.year(), 2015);
         });
 
+        test('nextMonth moves the calendar to the next month', function() {
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month());
+          defaultCalendar.nextMonth();
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month() + 1);
+        });
+
+        test('setting selectedDate updates calendar', function() {
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month() + 1);
+          defaultCalendar.selectedDate = new Date();
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month());
+        });
+
+        test('previousMonth moves the calendar to the previous month', function() {
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month());
+          defaultCalendar.previousMonth();
+          assert.equal(defaultCalendar._currentMonth.month(), moment().month() - 1);
+        });
+
       });
     </script>
 

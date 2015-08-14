@@ -28,7 +28,9 @@ Simply add the `<calendar-select>` element to the page, and you're off!
   </style>
 
   <template>
-    <h1>[[_monthName(_currentMonth)]]</h1>
+    <h1>{{_monthName(_currentMonth)}}</h1>
+    <button on-tap="previousMonth">prev</button>
+    <button on-tap="nextMonth">next</button>
     <table class="calendar-select__calendar">
       <thead>
         <tr>
@@ -59,7 +61,7 @@ Simply add the `<calendar-select>` element to the page, and you're off!
 
     properties: {
       /**
-       * Specify the initial selected date for the calendar. Can be specified as a string.
+       * Specify the selected date for the calendar. Can be specified as a string.
        *
        * @default Today
        */
@@ -67,7 +69,8 @@ Simply add the `<calendar-select>` element to the page, and you're off!
         type: Date,
         value: function() {
           return new Date();
-        }
+        },
+        observer: '_updateCurrentMonth'
       },
 
       _currentMonth: {
@@ -78,37 +81,32 @@ Simply add the `<calendar-select>` element to the page, and you're off!
     // Element Lifecycle
 
     ready: function() {
-      this._currentMonth = moment(this.selectedDate).startOf('month');
-      // `ready` is called after all elements have been configured, but
-      // propagates bottom-up. This element's children are ready, but parents
-      // are not.
-      //
-      // This is the point where you should make modifications to the DOM (when
-      // necessary), or kick off any processes the element wants to perform.
     },
 
-    attached: function() {
-      // `attached` fires once the element and its parents have been inserted
-      // into a document.
-      //
-      // This is a good place to perform any work related to your element's
-      // visual state or active behavior (measuring sizes, beginning animations,
-      // loading resources, etc).
+    /**
+     * Moves the calendar to the previous month.
+     *
+     * @return {Object} The moment object for the first of the previous month.
+     */
+    previousMonth: function() {
+      return this._currentMonth = this._currentMonth.subtract(1, 'month').clone();
     },
 
-    detached: function() {
-      // The analog to `attached`, `detached` fires when the element has been
-      // removed from a document.
-      //
-      // Use this to clean up anything you did in `attached`.
+    /**
+     * Moves the calendar to the next month.
+     *
+     * @return {Object} The moment object for the first of the next month.
+     */
+    nextMonth: function() {
+      return this._currentMonth = this._currentMonth.add(1, 'month').clone();
+    },
+
+    _updateCurrentMonth: function() {
+      return this._currentMonth = moment(this.selectedDate).startOf('month');
     },
 
     _dayNames: function() {
       return moment.weekdaysShort();
-    },
-
-    _parseDate: function(date) {
-      return moment(date);
     },
 
     _monthName: function(selectedMoment) {
