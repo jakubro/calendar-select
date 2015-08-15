@@ -17,7 +17,7 @@ Simply add the `<calendar-select>` element to the page, and you're off!
 
   <style>
     :host {
-      display: block;
+      display: inline-block;
       box-sizing: border-box;
       text-align: center;
     }
@@ -40,7 +40,7 @@ Simply add the `<calendar-select>` element to the page, and you're off!
         </tr>
       </thead>
       <tbody>
-        <template is="dom-repeat" items="[[_generateWeeks(_currentMonth)]]">
+        <template is="dom-repeat" items="[[_generateWeeks(_visibleWeeks)]]">
           <tr>
             <template is="dom-repeat" items="[[item]]">
               <td>[[item.date]]</td>
@@ -74,7 +74,14 @@ Simply add the `<calendar-select>` element to the page, and you're off!
       },
 
       _currentMonth: {
-        type: Object
+        type: Object,
+        readOnly: true,
+        observer: '_updateVisibleWeeks'
+      },
+
+      _visibleWeeks: {
+        type: Object,
+        readOnly: true
       }
     },
 
@@ -89,7 +96,7 @@ Simply add the `<calendar-select>` element to the page, and you're off!
      * @return {Object} The moment object for the first of the previous month.
      */
     previousMonth: function() {
-      return this._currentMonth = this._currentMonth.subtract(1, 'month').clone();
+      return this._set_currentMonth(this._currentMonth.clone().subtract(1, 'month'));
     },
 
     /**
@@ -98,11 +105,32 @@ Simply add the `<calendar-select>` element to the page, and you're off!
      * @return {Object} The moment object for the first of the next month.
      */
     nextMonth: function() {
-      return this._currentMonth = this._currentMonth.add(1, 'month').clone();
+      return this._set_currentMonth(this._currentMonth.clone().add(1, 'month'));
     },
 
     _updateCurrentMonth: function() {
-      return this._currentMonth = moment(this.selectedDate).startOf('month');
+      return this._set_currentMonth(moment(this.selectedDate).startOf('month'));
+    },
+
+    _updateVisibleWeeks: function(newMonth, oldMonth) {
+      if (oldMonth) {
+        if (oldMonth.isBefore(newMonth)) {
+          this._set_visibleWeeks({
+            start: oldMonth,
+            end: newMonth.clone().add(6, 'weeks')
+          });
+        } else {
+          this._set_visibleWeeks({
+            start: newMonth,
+            end: oldMonth.clone().add(6, 'weeks')
+          });
+        }
+      } else {
+        this._set_visibleWeeks({
+          start: newMonth,
+          end: newMonth.clone().add(6, 'weeks')
+        });
+      }
     },
 
     _dayNames: function() {
@@ -113,10 +141,10 @@ Simply add the `<calendar-select>` element to the page, and you're off!
       return selectedMoment.format('MMMM');
     },
 
-    _generateWeeks: function(currentMonth) {
-      var cursor = currentMonth.clone().startOf('week').subtract(1, 'day'),
-          today = moment();
-      return Array.apply(null, new Array(6)).map(function () {
+    _generateWeeks: function(visibleWeeks) {
+      var cursor = visibleWeeks.start.clone().startOf('week').subtract(1, 'day'),
+          numWeeks = visibleWeeks.end.diff(visibleWeeks.start, 'weeks');
+      return Array.apply(null, new Array(numWeeks)).map(function () {
         return Array.apply(null, new Array(7)).map(function () {
           var currentMoment = cursor.add(1, 'day');
           return {
